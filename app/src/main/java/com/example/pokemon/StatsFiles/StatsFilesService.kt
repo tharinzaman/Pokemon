@@ -6,8 +6,8 @@ import retrofit2.http.Query
 
 interface StatsFilesService {
 
-    @GET("pokemon/")
+    @GET("pokemon")
     fun getList(
-        @Query("") num: Int
+        @Query("/") num: Int
     ) : Call<PokemonObject>
 }

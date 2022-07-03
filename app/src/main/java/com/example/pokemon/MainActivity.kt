@@ -10,6 +10,7 @@ import com.example.pokemon.InitialFile.InitialFileObject
 import com.example.pokemon.InitialFile.InitialFileService
 import com.example.pokemon.StatsFiles.PokemonObject
 import com.example.pokemon.StatsFiles.StatsFilesService
+import com.example.pokemon.StatsFiles.TestService
 import com.example.pokemon.databinding.ActivityMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -110,12 +111,12 @@ class MainActivity : AppCompatActivity() {
             var position = 1
 
             // Loop through all the URLs in the hyperlinkList
-            for (link in list){
+//            for (link in list){
                 // Set up retrofit:
                 val retroFit = Retrofit.Builder().baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
-                val service: StatsFilesService = retroFit.create(StatsFilesService::class.java)
+                val service: TestService = retroFit.create(TestService::class.java)
                 val listCall: Call<PokemonObject> = service.getList(position)
 
                 // Start the parsing:
@@ -129,7 +130,6 @@ class MainActivity : AppCompatActivity() {
                             val pokemon: PokemonObject? = response.body()
                             pokemonList.add(pokemon!!)
                             Log.i("Pokemon", "$pokemon")
-                            Log.i("List 1", "$pokemonList")
                         } // Else if not successful, show the codes for why it failed:
                         else {
                             val rc = response.code()
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                 })
                 // Increase position
                 position++
-            }
+//            }
             Log.i("List 2", "$pokemonList")
         }
     }

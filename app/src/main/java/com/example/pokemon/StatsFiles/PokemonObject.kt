@@ -1,24 +1,33 @@
 package com.example.pokemon.StatsFiles
 
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+
 
 data class PokemonObject(
     val name: String,
     val height: Int,
     val weight: Int,
     val id: Int,
-    val sprites: List<String>,
-    val stats: List<Stat>
-
-
+//    val sprites: List<Sprites>,
+//    val stats: List<Stat>
 ) : Serializable
 
-data class Stat (
+data class Sprites(
+    @SerializedName("front_default")
+    val image: String
+) : Serializable
+
+data class Stat(
+    @SerializedName("base_stat")
     val baseStat: Int,
     val stat: StatName
 ) : Serializable
 
-data class StatName (
+data class StatName(
     val name: String
 ) : Serializable
+
+
 

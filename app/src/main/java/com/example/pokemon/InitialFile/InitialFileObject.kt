@@ -9,3 +9,8 @@ data class InitialFileObject(
     val results: List<InitialFileResult>
 ) : Serializable
 
+data class InitialFileResult(
+    val name: String,
+    val url: String
+) : Serializable
+
