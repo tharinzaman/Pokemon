@@ -10,8 +10,8 @@ data class PokemonObject(
     val height: Int,
     val weight: Int,
     val id: Int,
-//    val sprites: List<Sprites>,
-//    val stats: List<Stat>
+    val sprites: Sprites,
+    val stats: List<Stat>
 ) : Serializable
 
 data class Sprites(
