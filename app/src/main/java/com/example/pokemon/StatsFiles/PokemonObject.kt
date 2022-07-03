@@ -2,10 +2,11 @@ package com.example.pokemon.StatsFiles
 
 import java.io.Serializable
 
-data class StatsFileList(
+data class PokemonObject(
     val name: String,
     val height: Int,
     val weight: Int,
+    val id: Int,
     val sprites: List<String>,
     val stats: List<Stat>
 

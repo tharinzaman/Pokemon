@@ -4,10 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import com.example.pokemon.StatsFiles.PokemonObject
 
 object Constants {
 
     const val BASE_URL: String = "https://pokeapi.co/api/v2/"
+
+
+    var pokemonList = ArrayList<PokemonObject>()
 
     /**
      * This method checks to see if the user is connected to the internet, and then returns a boolean,
