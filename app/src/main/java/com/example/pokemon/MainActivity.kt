@@ -74,14 +74,14 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val firstFileList: InitialFileModel? = response.body()
                         // Add to the list of hyperlinks from the firstFileList:
-                        val hyperlinksListInner = ArrayList<String>()
+                        val hyperlinksList = ArrayList<String>()
                         if (firstFileList != null) {
                             for (i in firstFileList.results) {
-                                hyperlinksListInner.add(i.url)
+                                hyperlinksList.add(i.url)
                                 Log.i("link", "$i")
                             }
-                            Log.i("Hyperlink list inner", "$hyperlinksListInner")
-                            getPokemonStats(hyperlinksListInner)
+                            Log.i("Hyperlink list inner", "$hyperlinksList")
+                            getPokemonStats(hyperlinksList)
                         }
                     } // Else if not successful, show the codes for why it failed:
                     else {
@@ -143,13 +143,19 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         // If successful, create a pokemon object, convert it to...
                         if (response.isSuccessful) {
-                            val pokemon: PokemonModel? = response.body()
+                            Log.i("link", "$link")
+                            var pokemon: PokemonModel? = response.body()
                             Log.i("Pokemon", "$pokemon")
-                            val pokemonJsonString = Gson().toJson(pokemon)
-                            // Put it into the const val that matches the current position
-                            editor.putString("${Constants}.$position", pokemonJsonString)
-                            editor.apply()
-                            setupCard(position)
+//                            val pokemonJsonString = Gson().toJson(pokemon)
+//                            // Put it into the const val that matches the current position
+//                            editor.putString(Constants.POKEMON, pokemonJsonString)
+//                            editor.apply()
+                            if (pokemon != null) {
+                                setupCard(position, pokemon)
+                            }
+                            Log.i("Position", "$position")
+
+                            // If placed here, the position increases and UI gets set up but only Bulbasaur gets looped through.
                         } // Else if not successful, show the codes for why it failed:
                         else {
                             val rc = response.code()
@@ -165,59 +171,212 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
+                        // If placed here, it also only generates Bulbasaur
                     }
 
                     // If failed, show error message in Logcat:
                     override fun onFailure(call: Call<PokemonModel>, t: Throwable) {
                         Log.e("Error", t.message.toString())
                     }
+
                 })
-                // Increase position
-                position++
+                // If placed here, the position increases and the links are all looped through, but UI cannot be set up.
             }
-            hideProgressDialog()
         }
+        hideProgressDialog()
     }
+
 
     /**
      * This method will set up the material card views in the Main Activities UI which consists of a
      * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
      */
-    private fun setupCard(num: Int) {
+    private fun setupCard(position: Int, pokemon: PokemonModel) {
         // Get the string
-        val pokemonJsonString = sharedPreferences.getString("${Constants}.$num", "")
+//        val pokemonJsonString = sharedPreferences.getString(Constants.POKEMON, "")
+//
+//        // If the Json string isn't empty, then convert back to Gson and set up the UI elements
+//        if (!pokemonJsonString.isNullOrEmpty()) {
+//            val pokemon =
+//                Gson().fromJson(pokemonJsonString, PokemonModel::class.java)
 
-        // If the Json string isn't empty, then convert back to Gson and set up the UI elements
-        if (!pokemonJsonString.isNullOrEmpty()) {
-            val pokemon =
-                Gson().fromJson(pokemonJsonString, PokemonModel::class.java)
+//            binding?.tv1?.text = pokemon.name.capitalize()
+//            Picasso
+//                .with(this)
+//                .load(pokemon.sprites.image)
+//                .into(binding?.iv1)
+//            Log.i("Position", "$position")
 
-            binding?.tv1?.text = pokemon.name.capitalize()
-            // Use Picasso to load in the image from the URL
-            Picasso
-                .with(this)
-                .load(pokemon.sprites.image)
-                .into(binding?.iv1)
-
-            // When statement for the different pokemons
-            when (num) {
-                1 -> {
-                    binding?.tv1?.text = pokemon.name
-                    Picasso
-                        .with(this)
-                        .load(pokemon.sprites.image)
-                        .into(binding?.iv1)
-                }
-                2 -> {
-                    setTextImageAndOnClick(binding?.tv1!!, binding?.iv1!!, pokemon)
-                }
+//             When statement for the different pokemons
+        when (position) {
+            1 -> {
+                binding?.tv1?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv1)
+                Log.i("Success", "Success for UI")
+            }
+            2 -> {
+                binding?.tv2?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv2)
+                Log.i("Success", "Success for UI")
+            }
+            3 -> {
+                binding?.tv3?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv3)
+                Log.i("Success", "Success for UI")
+            }
+            4 -> {
+                binding?.tv4?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv4)
+                Log.i("Success", "Success for UI")
+            }
+            5 -> {
+                binding?.tv5?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv5)
+                Log.i("Success", "Success for UI")
+            }
+            6 -> {
+                binding?.tv6?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv6)
+                Log.i("Success", "Success for UI")
+            }
+            7 -> {
+                binding?.tv7?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv7)
+                Log.i("Success", "Success for UI")
+            }
+            8 -> {
+                binding?.tv8?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv8)
+                Log.i("Success", "Success for UI")
+            }
+            9 -> {
+                binding?.tv9?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv9)
+                Log.i("Success", "Success for UI")
+            }
+            10 -> {
+                binding?.tv10?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv10)
+                Log.i("Success", "Success for UI")
+            }
+            11 -> {
+                binding?.tv11?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv11)
+                Log.i("Success", "Success for UI")
+            }
+            12 -> {
+                binding?.tv12?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv12)
+                Log.i("Success", "Success for UI")
+            }
+            13 -> {
+                binding?.tv2?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv13)
+                Log.i("Success", "Success for UI")
+            }
+            14 -> {
+                binding?.tv14?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv14)
+                Log.i("Success", "Success for UI")
+            }
+            15 -> {
+                binding?.tv15?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv15)
+                Log.i("Success", "Success for UI")
+            }
+            16 -> {
+                binding?.tv16?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv16)
+                Log.i("Success", "Success for UI")
+            }
+            17 -> {
+                binding?.tv17?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv17)
+                Log.i("Success", "Success for UI")
+            }
+            18 -> {
+                binding?.tv18?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv18)
+                Log.i("Success", "Success for UI")
+            }
+            19 -> {
+                binding?.tv19?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv19)
+                Log.i("Success", "Success for UI")
+            }
+            20 -> {
+                binding?.tv20?.text = pokemon.name.capitalize()
+                Picasso
+                    .with(this)
+                    .load(pokemon.sprites.image)
+                    .into(binding?.iv20)
+                Log.i("Success", "Success for UI")
             }
         }
     }
 
-    private fun setTextImageAndOnClick(textview: TextView, imageView: ImageView, pokemon: PokemonModel
+
+    private fun setTextImageAndOnClick(
+        textview: TextView, imageView: ImageView, pokemon: PokemonModel
     ) {
-        textview.text = pokemon.name
+        textview.text = pokemon.name.capitalize()
         Picasso
             .with(this)
             .load(pokemon.sprites.image)
@@ -232,7 +391,7 @@ class MainActivity : AppCompatActivity() {
         progressDialog = Dialog(this)
 
         /*Set the screen content from a layout resource.
-        The resource will be inflated, adding all top-level views to the screen.*/
+    The resource will be inflated, adding all top-level views to the screen.*/
         progressDialog!!.setContentView(R.layout.dialog_custom_progress)
 
         //Start the dialog and display it on screen.
@@ -248,5 +407,5 @@ class MainActivity : AppCompatActivity() {
             progressDialog!!.dismiss()
         }
     }
-
 }
+
