@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface InitialFileService {
 
     @GET("pokemon/")
-    fun getList() : Call<InitialFileObject>
+    fun getList() : Call<InitialFileModel>
 }

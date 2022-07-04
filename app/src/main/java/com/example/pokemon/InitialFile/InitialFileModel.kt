@@ -2,7 +2,7 @@ package com.example.pokemon.InitialFile
 
 import java.io.Serializable
 
-data class InitialFileObject(
+data class InitialFileModel(
     val count: Int,
     val next: String,
     val previous: String?,

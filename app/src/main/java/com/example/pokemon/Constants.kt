@@ -4,14 +4,35 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import com.example.pokemon.StatsFiles.PokemonObject
+import com.example.pokemon.StatsFiles.PokemonModel
 
 object Constants {
 
+    // API URL
     const val BASE_URL: String = "https://pokeapi.co/api/v2/"
 
-
-    var pokemonList = ArrayList<PokemonObject>()
+    // For shared preferences:
+    const val PREFERENCE_NAME = "PokemonAppPreferences"
+    const val POKEMON_1 = "pokemon_1"
+    const val POKEMON_2 = "pokemon_2"
+    const val POKEMON_3 = "pokemon_3"
+    const val POKEMON_4 = "pokemon_4"
+    const val POKEMON_5 = "pokemon_5"
+    const val POKEMON_6 = "pokemon_6"
+    const val POKEMON_7 = "pokemon_7"
+    const val POKEMON_8 = "pokemon_8"
+    const val POKEMON_9 = "pokemon_9"
+    const val POKEMON_10 = "pokemon_10"
+    const val POKEMON_11 = "pokemon_11"
+    const val POKEMON_12 = "pokemon_12"
+    const val POKEMON_13 = "pokemon_13"
+    const val POKEMON_14 = "pokemon_14"
+    const val POKEMON_15 = "pokemon_15"
+    const val POKEMON_16 = "pokemon_16"
+    const val POKEMON_17 = "pokemon_17"
+    const val POKEMON_18 = "pokemon_18"
+    const val POKEMON_19 = "pokemon_19"
+    const val POKEMON_20 = "pokemon_20"
 
     /**
      * This method checks to see if the user is connected to the internet, and then returns a boolean,
