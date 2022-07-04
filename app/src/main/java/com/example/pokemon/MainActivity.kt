@@ -133,23 +133,28 @@ class MainActivity : AppCompatActivity() {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val service: StatsFileService = retroFit.create(StatsFileService::class.java)
-                // Must increment here or only one pokemon object will be created each time
+                // Must increment here or code won
                 servicePosition += 1
+                Log.i("servicePosition", "$servicePosition")
                 val listCall: Call<PokemonModel> = service.getList(servicePosition)
 
-                // Begin attempt to retrieve data:
+                // Start the parsing:
                 listCall.enqueue(object : Callback<PokemonModel> {
                     override fun onResponse(
                         call: Call<PokemonModel>,
                         response: Response<PokemonModel>
                     ) {
-                        // If successful, create a pokemon object, and call the setupCard method with it as a parameter
+                        // If successful, create a pokemon object, convert it to...
                         if (response.isSuccessful) {
+                            Log.i("link", "$link")
                             var pokemon: PokemonModel? = response.body()
+                            Log.i("Pokemon", "$pokemon")
                             if (pokemon != null) {
+                                Log.i("PositionInner", "$listPosition")
                                 setupCard(listPosition, pokemon)
-                                listPosition++ // Must increment here in order for code to work
+                                listPosition++
                             }
+                            // If placed here, the position increases and UI gets set up but only Bulbasaur gets looped through.
                         } // Else if not successful, show the codes for why it failed:
                         else {
                             val rc = response.code()
@@ -165,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
+                        // If placed here, it also only generates Bulbasaur
                     }
                     // If failed, show error message in Logcat:
                     override fun onFailure(call: Call<PokemonModel>, t: Throwable) {
@@ -172,18 +178,18 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
+                // If placed here, the position increases and the links are all looped through, but UI cannot be set up.
             }
         }
-        // Once all of the cards have been set up, hide the progress dialog.
         hideProgressDialog()
     }
 
     /**
-     * This method will set up the material card views in the Main Activity's UI by calling the
-     * setTextImageAndOnClickMethod and passing the appropriate parameters.
+     * This method will set up the material card views in the Main Activities UI which consists of a
+     * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
      */
     private fun setupCard(position: Int, pokemon: PokemonModel) {
-        // Setting up the cardview and its components depending on the position in the hyperlinks list
+
         when (position) {
             1 -> { setTextImageAndOnClick(binding?.tv1, binding?.iv1, binding?.card1, pokemon) }
             2 -> { setTextImageAndOnClick(binding?.tv2, binding?.iv2, binding?.card2, pokemon) }
@@ -211,11 +217,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * This method sets up the card view by using the parameters parsed to it. It sets the OnClickListeners
-     * of the cards to start a new DetailsScreen activity when they are clicked. It passes the pokemon
-     * object as an intent when starting this activity.
-     */
     private fun setTextImageAndOnClick(
         textview: TextView?,
         imageView: ImageView?,
@@ -229,7 +230,8 @@ class MainActivity : AppCompatActivity() {
             .with(this)
             .load(pokemon.sprites.image)
             .into(imageView)
-        // Set the onClickListener
+        // Set the onClickListener for the card by creating an intent to start the details screen activity
+        // and pass the pokemon object as a parameter
         materialCardView?.setOnClickListener{
             val intent = Intent(this, DetailsScreen::class.java)
             intent.putExtra("pokemon", pokemon)
@@ -244,8 +246,8 @@ class MainActivity : AppCompatActivity() {
     private fun showProgressDialog() {
         progressDialog = Dialog(this)
 
-        /*Set the screen content from the layout resource.
-        The resource will be inflated, adding all top-level views to the screen.*/
+        /*Set the screen content from a layout resource.
+    The resource will be inflated, adding all top-level views to the screen.*/
         progressDialog!!.setContentView(R.layout.dialog_custom_progress)
 
         //Start the dialog and display it on screen.

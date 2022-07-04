@@ -1,9 +1,7 @@
 package com.example.pokemon
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.example.pokemon.StatsFiles.PokemonModel
 import com.example.pokemon.databinding.ActivityDetailsScreenBinding
 import com.squareup.picasso.Picasso
@@ -11,7 +9,7 @@ import com.squareup.picasso.Picasso
 class DetailsScreen : AppCompatActivity() {
 
     // Set up view binding
-    var binding: ActivityDetailsScreenBinding? = null
+    private var binding: ActivityDetailsScreenBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +17,7 @@ class DetailsScreen : AppCompatActivity() {
         binding = ActivityDetailsScreenBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         // Get the pokemon object
-        var pokemon = intent.getSerializableExtra("pokemon") as PokemonModel
+        val pokemon = intent.getSerializableExtra("pokemon") as PokemonModel
         // Set the UI variables:
         Picasso
             .with(this@DetailsScreen)

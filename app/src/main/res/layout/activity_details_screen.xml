@@ -27,8 +27,7 @@
                 android:id="@+id/ivDetailScreenImage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/tester"/>
+                android:layout_weight="1"/>
 
             <LinearLayout
                 android:id="@+id/llStats"
@@ -44,7 +43,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Name: "
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvHeight"
@@ -52,7 +51,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Height:"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvWeight"
@@ -60,7 +59,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Weight:"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvStat1"
@@ -68,7 +67,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Stat 1: "
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvStat2"
@@ -76,7 +75,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Stat 2:"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvStat3"
@@ -84,7 +83,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Stat 3:"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvStat4"
@@ -92,7 +91,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Stat 4:"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
                 <TextView
                     android:id="@+id/tvStat5"
@@ -100,7 +99,7 @@
                     android:layout_height="wrap_content"
                     tools:text="Stat 5: "
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="17sp"
                     android:layout_marginBottom="5dp"/>
 
             </LinearLayout>
