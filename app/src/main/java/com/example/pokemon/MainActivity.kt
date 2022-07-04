@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.example.pokemon.InitialFile.InitialFileModel
 import com.example.pokemon.InitialFile.InitialFileService
@@ -13,6 +15,7 @@ import com.example.pokemon.StatsFiles.PokemonModel
 import com.example.pokemon.StatsFiles.StatsFileService
 import com.example.pokemon.databinding.ActivityMainBinding
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -141,6 +144,7 @@ class MainActivity : AppCompatActivity() {
                         // If successful, create a pokemon object, convert it to...
                         if (response.isSuccessful) {
                             val pokemon: PokemonModel? = response.body()
+                            Log.i("Pokemon", "$pokemon")
                             val pokemonJsonString = Gson().toJson(pokemon)
                             // Put it into the const val that matches the current position
                             editor.putString("${Constants}.$position", pokemonJsonString)
@@ -179,16 +183,45 @@ class MainActivity : AppCompatActivity() {
      * This method will set up the material card views in the Main Activities UI which consists of a
      * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
      */
-    private fun setupCard(cardNum: Int) {
+    private fun setupCard(num: Int) {
         // Get the string
-        val pokemonJsonString = sharedPreferences.getString("${Constants}.$cardNum", "")
+        val pokemonJsonString = sharedPreferences.getString("${Constants}.$num", "")
 
         // If the Json string isn't empty, then convert back to Gson and set up the UI elements
         if (!pokemonJsonString.isNullOrEmpty()) {
-            val pokemonList =
+            val pokemon =
                 Gson().fromJson(pokemonJsonString, PokemonModel::class.java)
 
+            binding?.tv1?.text = pokemon.name.capitalize()
+            // Use Picasso to load in the image from the URL
+            Picasso
+                .with(this)
+                .load(pokemon.sprites.image)
+                .into(binding?.iv1)
+
+            // When statement for the different pokemons
+            when (num) {
+                1 -> {
+                    binding?.tv1?.text = pokemon.name
+                    Picasso
+                        .with(this)
+                        .load(pokemon.sprites.image)
+                        .into(binding?.iv1)
+                }
+                2 -> {
+                    setTextImageAndOnClick(binding?.tv1!!, binding?.iv1!!, pokemon)
+                }
+            }
         }
+    }
+
+    private fun setTextImageAndOnClick(textview: TextView, imageView: ImageView, pokemon: PokemonModel
+    ) {
+        textview.text = pokemon.name
+        Picasso
+            .with(this)
+            .load(pokemon.sprites.image)
+            .into(imageView)
     }
 
     /**
