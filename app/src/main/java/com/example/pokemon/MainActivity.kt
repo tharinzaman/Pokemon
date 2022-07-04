@@ -124,7 +124,8 @@ class MainActivity : AppCompatActivity() {
         // Check if they are connected to the internet:
         if (Constants.checkIfNetworkIsAvailable(this)) {
             // Position in hyperlink list
-            var position = 1
+            var servicePosition = 0
+            var listPosition = 1
 
             // Loop through all the URLs in the hyperlinkList
             for (link in list) {
@@ -133,7 +134,9 @@ class MainActivity : AppCompatActivity() {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val service: StatsFileService = retroFit.create(StatsFileService::class.java)
-                val listCall: Call<PokemonModel> = service.getList(position)
+                servicePosition += 1
+                Log.i("servicePosition", "$servicePosition")
+                val listCall: Call<PokemonModel> = service.getList(servicePosition)
 
                 // Start the parsing:
                 listCall.enqueue(object : Callback<PokemonModel> {
@@ -146,15 +149,11 @@ class MainActivity : AppCompatActivity() {
                             Log.i("link", "$link")
                             var pokemon: PokemonModel? = response.body()
                             Log.i("Pokemon", "$pokemon")
-//                            val pokemonJsonString = Gson().toJson(pokemon)
-//                            // Put it into the const val that matches the current position
-//                            editor.putString(Constants.POKEMON, pokemonJsonString)
-//                            editor.apply()
                             if (pokemon != null) {
-                                setupCard(position, pokemon)
+                                Log.i("PositionInner", "$listPosition")
+                                setupCard(listPosition, pokemon)
+                                listPosition++
                             }
-                            Log.i("Position", "$position")
-
                             // If placed here, the position increases and UI gets set up but only Bulbasaur gets looped through.
                         } // Else if not successful, show the codes for why it failed:
                         else {
@@ -173,13 +172,12 @@ class MainActivity : AppCompatActivity() {
                         }
                         // If placed here, it also only generates Bulbasaur
                     }
-
                     // If failed, show error message in Logcat:
                     override fun onFailure(call: Call<PokemonModel>, t: Throwable) {
                         Log.e("Error", t.message.toString())
                     }
-
                 })
+
                 // If placed here, the position increases and the links are all looped through, but UI cannot be set up.
             }
         }
@@ -192,20 +190,6 @@ class MainActivity : AppCompatActivity() {
      * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
      */
     private fun setupCard(position: Int, pokemon: PokemonModel) {
-        // Get the string
-//        val pokemonJsonString = sharedPreferences.getString(Constants.POKEMON, "")
-//
-//        // If the Json string isn't empty, then convert back to Gson and set up the UI elements
-//        if (!pokemonJsonString.isNullOrEmpty()) {
-//            val pokemon =
-//                Gson().fromJson(pokemonJsonString, PokemonModel::class.java)
-
-//            binding?.tv1?.text = pokemon.name.capitalize()
-//            Picasso
-//                .with(this)
-//                .load(pokemon.sprites.image)
-//                .into(binding?.iv1)
-//            Log.i("Position", "$position")
 
 //             When statement for the different pokemons
         when (position) {
@@ -368,6 +352,9 @@ class MainActivity : AppCompatActivity() {
                     .load(pokemon.sprites.image)
                     .into(binding?.iv20)
                 Log.i("Success", "Success for UI")
+            }
+            else -> {
+                Log.i("Failed", "Could not set up UI")
             }
         }
     }
