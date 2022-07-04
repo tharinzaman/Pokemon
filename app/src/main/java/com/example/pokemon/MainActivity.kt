@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     // View binding for UI components
     private var binding: ActivityMainBinding? = null
-
     // Progress Dialog
     private var progressDialog: Dialog? = null
 
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
      * This method will first check if the user is connected to the internet. If they are, then it will load in the
      * data from the initial file (https://pokeapi.co/api/v2/pokemon/) containing the Pokemon names and links to the files
      * containing greater details and stats. It will create a list of these links and then call the getPokemonStats()
-     * method with this list as the parameter.
+     * method with this list as the parameter. All Logs are for testing purposes.
      */
     private fun getPokemonJsonLinks() {
         // Check if they are connected to the internet:
@@ -74,12 +73,14 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     // If successful, create a list of links and then call the getPokemonStats() method
                     if (response.isSuccessful) {
-                        val initialFileList: InitialFileModel? = response.body()
+                        val initialFile: InitialFileModel? = response.body()
+                        Log.i("File", "$initialFile") // Testing purposes
                         val linksList = ArrayList<String>()
-                        if (initialFileList != null) {
-                            for (i in initialFileList.results) {
+                        if (initialFile != null) {
+                            for (i in initialFile.results) {
                                 linksList.add(i.url)
                             }
+                            Log.i("linksList", "$linksList") // Testing purposes
                             getPokemonStats(linksList)
                         }
                     } // Else if not successful, show the codes for why it failed:
@@ -116,7 +117,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * This method will first check if the user is connected to the internet. If they are, then it will loop through
      * all of the links in the list parameter. When doing this, it will create pokemon objects, and call the setupCard()
-     * method to set up the UI of the Main Activity.
+     * method to set up the UI of the Main Activity. All Log's are for testing purposes.
      */
     private fun getPokemonStats(list: ArrayList<String>) {
         // Check if they are connected to the internet:
@@ -133,28 +134,27 @@ class MainActivity : AppCompatActivity() {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val service: StatsFileService = retroFit.create(StatsFileService::class.java)
-                // Must increment here or code won
+                // Must increment here or code will not work
                 servicePosition += 1
                 Log.i("servicePosition", "$servicePosition")
                 val listCall: Call<PokemonModel> = service.getList(servicePosition)
 
-                // Start the parsing:
+                // Begin attempt to retrieve data
                 listCall.enqueue(object : Callback<PokemonModel> {
                     override fun onResponse(
                         call: Call<PokemonModel>,
                         response: Response<PokemonModel>
                     ) {
-                        // If successful, create a pokemon object, convert it to...
+                        // If successful, create a pokemon object and call the setupCard method with it passed as a parameter
                         if (response.isSuccessful) {
                             Log.i("link", "$link")
-                            var pokemon: PokemonModel? = response.body()
+                            val pokemon: PokemonModel? = response.body()
                             Log.i("Pokemon", "$pokemon")
                             if (pokemon != null) {
                                 Log.i("PositionInner", "$listPosition")
                                 setupCard(listPosition, pokemon)
                                 listPosition++
                             }
-                            // If placed here, the position increases and UI gets set up but only Bulbasaur gets looped through.
                         } // Else if not successful, show the codes for why it failed:
                         else {
                             val rc = response.code()
@@ -170,23 +170,22 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        // If placed here, it also only generates Bulbasaur
                     }
                     // If failed, show error message in Logcat:
                     override fun onFailure(call: Call<PokemonModel>, t: Throwable) {
                         Log.e("Error", t.message.toString())
                     }
                 })
-
-                // If placed here, the position increases and the links are all looped through, but UI cannot be set up.
             }
         }
         hideProgressDialog()
     }
 
     /**
-     * This method will set up the material card views in the Main Activities UI which consists of a
-     * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
+     * This method will set up the card views in the UI of the Main Activity. It will do this by calling
+     * the setTextImageAndOnClick method and parsing the appropriate parameters to it. The parameters parsed
+     * depend on the parameter gained, i.e. if setUpCard was parsed '1' then it will parse
+     * binding?.tv1 for example.
      */
     private fun setupCard(position: Int, pokemon: PokemonModel) {
 
@@ -217,6 +216,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This method sets the UI components in the Main Activity using the parameters parsed to it.
+     * It sets the onClickListener for each card in the UI by creating an intent to the DetailsScreen
+     * Activity and putting the pokemon object as an extra.
+     */
     private fun setTextImageAndOnClick(
         textview: TextView?,
         imageView: ImageView?,
