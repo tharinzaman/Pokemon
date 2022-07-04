@@ -2,7 +2,6 @@ package com.example.pokemon
 
 import android.app.Dialog
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,7 +13,6 @@ import com.example.pokemon.InitialFile.InitialFileService
 import com.example.pokemon.StatsFiles.PokemonModel
 import com.example.pokemon.StatsFiles.StatsFileService
 import com.example.pokemon.databinding.ActivityMainBinding
-import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,10 +25,6 @@ class MainActivity : AppCompatActivity() {
     // For view binding UI components
     private var binding: ActivityMainBinding? = null
 
-    // For the shared preferences
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
-
     // Progress Dialog
     private var progressDialog: Dialog? = null
 
@@ -39,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         // For view binding UI components
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        // Shared Preferences
-        sharedPreferences = getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
         // Start the method
         getPokemonJsonLinks()
     }
@@ -123,7 +114,8 @@ class MainActivity : AppCompatActivity() {
     private fun getPokemonStats(list: ArrayList<String>) {
         // Check if they are connected to the internet:
         if (Constants.checkIfNetworkIsAvailable(this)) {
-            // Position in hyperlink list
+
+            // Positions in hyperlink list, these have to be separate or the method won't work.
             var servicePosition = 0
             var listPosition = 1
 
@@ -191,168 +183,27 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupCard(position: Int, pokemon: PokemonModel) {
 
-//             When statement for the different pokemons
         when (position) {
-            1 -> {
-                binding?.tv1?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv1)
-                Log.i("Success", "Success for UI")
-            }
-            2 -> {
-                binding?.tv2?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv2)
-                Log.i("Success", "Success for UI")
-            }
-            3 -> {
-                binding?.tv3?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv3)
-                Log.i("Success", "Success for UI")
-            }
-            4 -> {
-                binding?.tv4?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv4)
-                Log.i("Success", "Success for UI")
-            }
-            5 -> {
-                binding?.tv5?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv5)
-                Log.i("Success", "Success for UI")
-            }
-            6 -> {
-                binding?.tv6?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv6)
-                Log.i("Success", "Success for UI")
-            }
-            7 -> {
-                binding?.tv7?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv7)
-                Log.i("Success", "Success for UI")
-            }
-            8 -> {
-                binding?.tv8?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv8)
-                Log.i("Success", "Success for UI")
-            }
-            9 -> {
-                binding?.tv9?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv9)
-                Log.i("Success", "Success for UI")
-            }
-            10 -> {
-                binding?.tv10?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv10)
-                Log.i("Success", "Success for UI")
-            }
-            11 -> {
-                binding?.tv11?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv11)
-                Log.i("Success", "Success for UI")
-            }
-            12 -> {
-                binding?.tv12?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv12)
-                Log.i("Success", "Success for UI")
-            }
-            13 -> {
-                binding?.tv2?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv13)
-                Log.i("Success", "Success for UI")
-            }
-            14 -> {
-                binding?.tv14?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv14)
-                Log.i("Success", "Success for UI")
-            }
-            15 -> {
-                binding?.tv15?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv15)
-                Log.i("Success", "Success for UI")
-            }
-            16 -> {
-                binding?.tv16?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv16)
-                Log.i("Success", "Success for UI")
-            }
-            17 -> {
-                binding?.tv17?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv17)
-                Log.i("Success", "Success for UI")
-            }
-            18 -> {
-                binding?.tv18?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv18)
-                Log.i("Success", "Success for UI")
-            }
-            19 -> {
-                binding?.tv19?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv19)
-                Log.i("Success", "Success for UI")
-            }
-            20 -> {
-                binding?.tv20?.text = pokemon.name.capitalize()
-                Picasso
-                    .with(this)
-                    .load(pokemon.sprites.image)
-                    .into(binding?.iv20)
-                Log.i("Success", "Success for UI")
-            }
+            1 -> { setTextImageAndOnClick(binding?.tv1, binding?.iv1, pokemon) }
+            2 -> { setTextImageAndOnClick(binding?.tv2, binding?.iv2, pokemon) }
+            3 -> { setTextImageAndOnClick(binding?.tv3, binding?.iv3, pokemon) }
+            4 -> { setTextImageAndOnClick(binding?.tv4, binding?.iv4, pokemon) }
+            5 -> { setTextImageAndOnClick(binding?.tv5, binding?.iv5, pokemon) }
+            6 -> { setTextImageAndOnClick(binding?.tv6, binding?.iv6, pokemon) }
+            7 -> { setTextImageAndOnClick(binding?.tv7, binding?.iv7, pokemon) }
+            8 -> { setTextImageAndOnClick(binding?.tv8, binding?.iv8, pokemon) }
+            9 -> { setTextImageAndOnClick(binding?.tv9, binding?.iv9, pokemon) }
+            10 -> { setTextImageAndOnClick(binding?.tv10, binding?.iv10, pokemon) }
+            11 -> { setTextImageAndOnClick(binding?.tv11, binding?.iv11, pokemon) }
+            12 -> { setTextImageAndOnClick(binding?.tv12, binding?.iv12, pokemon) }
+            13 -> { setTextImageAndOnClick(binding?.tv13, binding?.iv13, pokemon) }
+            14 -> { setTextImageAndOnClick(binding?.tv14, binding?.iv14, pokemon) }
+            15 -> { setTextImageAndOnClick(binding?.tv15, binding?.iv15, pokemon) }
+            16 -> { setTextImageAndOnClick(binding?.tv16, binding?.iv16, pokemon) }
+            17 -> { setTextImageAndOnClick(binding?.tv17, binding?.iv17, pokemon) }
+            18 -> { setTextImageAndOnClick(binding?.tv18, binding?.iv18, pokemon) }
+            19 -> { setTextImageAndOnClick(binding?.tv19, binding?.iv19, pokemon) }
+            20 -> { setTextImageAndOnClick(binding?.tv20, binding?.iv20, pokemon) }
             else -> {
                 Log.i("Failed", "Could not set up UI")
             }
@@ -361,9 +212,9 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setTextImageAndOnClick(
-        textview: TextView, imageView: ImageView, pokemon: PokemonModel
+        textview: TextView?, imageView: ImageView?, pokemon: PokemonModel
     ) {
-        textview.text = pokemon.name.capitalize()
+        textview?.text = pokemon.name.capitalize()
         Picasso
             .with(this)
             .load(pokemon.sprites.image)
