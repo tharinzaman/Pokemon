@@ -1,7 +1,16 @@
 package com.example.pokemon
 
+/**
+ * This is my first app using a REST API and Retrofit. It reads in data from an endpoint from the
+ * Pokemon API (https://pokeapi.co/api/v2/pokemon/). This contains a series of 20 other endpoints
+ * containing data and stats about pokemons, which are all read in using Retrofit. The data from this
+ * is then used to build a UI which comprises a list of pokemons with their names and sprites. Upon
+ * clicking the pokemon, the user will be directed to the DetailsScreen Activity which will show them
+ * more stats and information about the pokemon, again derived from the aPI. The GitHub link for this
+ * app is https://github.com/tharinzaman/Pokemon.
+ */
+
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    // For view binding UI components
+    // View binding for UI components
     private var binding: ActivityMainBinding? = null
 
     // Progress Dialog
@@ -32,18 +41,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // For view binding UI components
+        // View binding UI components
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
-        // Start the method
+        // Get the API data
         getPokemonJsonLinks()
     }
 
     /**
-     * This method will first check if the user is connected to the internet, then load in the
-     * data from the first JSON file containing the Pokemon names and hyperlinks to the JSON files
-     * containing their stats. It will create a list of these hyperlinks and then call the getPokemonStats
-     * method with the hyperlinks list as the parameter.
+     * This method will first check if the user is connected to the internet. If they are, then it will load in the
+     * data from the initial file (https://pokeapi.co/api/v2/pokemon/) containing the Pokemon names and links to the files
+     * containing greater details and stats. It will create a list of these links and then call the getPokemonStats()
+     * method with this list as the parameter.
      */
     private fun getPokemonJsonLinks() {
         // Check if they are connected to the internet:
@@ -56,25 +65,22 @@ class MainActivity : AppCompatActivity() {
             val service: InitialFileService = retroFit.create(InitialFileService::class.java)
             val listCall: Call<InitialFileModel> = service.getList()
 
-            // Start the parsing:
-            showProgressDialog()
+            // Begin attempt to retrieve the data
+            showProgressDialog() // Show the progress dialog whilst the data is being retrieved and UI is being set up
             listCall.enqueue(object : Callback<InitialFileModel> {
                 override fun onResponse(
                     call: Call<InitialFileModel>,
                     response: Response<InitialFileModel>
                 ) {
-                    // If successful, create a list of type FirstFileList from the body:
+                    // If successful, create a list of links and then call the getPokemonStats() method
                     if (response.isSuccessful) {
-                        val firstFileList: InitialFileModel? = response.body()
-                        // Add to the list of hyperlinks from the firstFileList:
-                        val hyperlinksList = ArrayList<String>()
-                        if (firstFileList != null) {
-                            for (i in firstFileList.results) {
-                                hyperlinksList.add(i.url)
-                                Log.i("link", "$i")
+                        val initialFileList: InitialFileModel? = response.body()
+                        val linksList = ArrayList<String>()
+                        if (initialFileList != null) {
+                            for (i in initialFileList.results) {
+                                linksList.add(i.url)
                             }
-                            Log.i("Hyperlink list inner", "$hyperlinksList")
-                            getPokemonStats(hyperlinksList)
+                            getPokemonStats(linksList)
                         }
                     } // Else if not successful, show the codes for why it failed:
                     else {
@@ -108,47 +114,42 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * This method will first check if the user is connected to the internet, and then loop through
-     * all of the hyperlinks in the list parameter. It will create pokemon objects, convert these to
-     * strings and then place these strings into the app's shared preferences. It will then call the
-     * setupCard method so that each card in the UI of the Main Activity is set up.
+     * This method will first check if the user is connected to the internet. If they are, then it will loop through
+     * all of the links in the list parameter. When doing this, it will create pokemon objects, and call the setupCard()
+     * method to set up the UI of the Main Activity.
      */
     private fun getPokemonStats(list: ArrayList<String>) {
         // Check if they are connected to the internet:
         if (Constants.checkIfNetworkIsAvailable(this)) {
 
-            // Positions in hyperlink list, these have to be separate or the method won't work.
+            // Positions in list, these have to be separate or the method won't work.
             var servicePosition = 0
             var listPosition = 1
 
-            // Loop through all the URLs in the hyperlinkList
+            // Loop through all the URLs in the list
             for (link in list) {
                 // Set up retrofit:
                 val retroFit = Retrofit.Builder().baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 val service: StatsFileService = retroFit.create(StatsFileService::class.java)
+                // Must increment here or only one pokemon object will be created each time
                 servicePosition += 1
-                Log.i("servicePosition", "$servicePosition")
                 val listCall: Call<PokemonModel> = service.getList(servicePosition)
 
-                // Start the parsing:
+                // Begin attempt to retrieve data:
                 listCall.enqueue(object : Callback<PokemonModel> {
                     override fun onResponse(
                         call: Call<PokemonModel>,
                         response: Response<PokemonModel>
                     ) {
-                        // If successful, create a pokemon object, convert it to...
+                        // If successful, create a pokemon object, and call the setupCard method with it as a parameter
                         if (response.isSuccessful) {
-                            Log.i("link", "$link")
                             var pokemon: PokemonModel? = response.body()
-                            Log.i("Pokemon", "$pokemon")
                             if (pokemon != null) {
-                                Log.i("PositionInner", "$listPosition")
                                 setupCard(listPosition, pokemon)
-                                listPosition++
+                                listPosition++ // Must increment here in order for code to work
                             }
-                            // If placed here, the position increases and UI gets set up but only Bulbasaur gets looped through.
                         } // Else if not successful, show the codes for why it failed:
                         else {
                             val rc = response.code()
@@ -164,7 +165,6 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         }
-                        // If placed here, it also only generates Bulbasaur
                     }
                     // If failed, show error message in Logcat:
                     override fun onFailure(call: Call<PokemonModel>, t: Throwable) {
@@ -172,18 +172,18 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
-                // If placed here, the position increases and the links are all looped through, but UI cannot be set up.
             }
         }
+        // Once all of the cards have been set up, hide the progress dialog.
         hideProgressDialog()
     }
 
     /**
-     * This method will set up the material card views in the Main Activities UI which consists of a
-     * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
+     * This method will set up the material card views in the Main Activity's UI by calling the
+     * setTextImageAndOnClickMethod and passing the appropriate parameters.
      */
     private fun setupCard(position: Int, pokemon: PokemonModel) {
-
+        // Setting up the cardview and its components depending on the position in the hyperlinks list
         when (position) {
             1 -> { setTextImageAndOnClick(binding?.tv1, binding?.iv1, binding?.card1, pokemon) }
             2 -> { setTextImageAndOnClick(binding?.tv2, binding?.iv2, binding?.card2, pokemon) }
@@ -211,6 +211,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * This method sets up the card view by using the parameters parsed to it. It sets the OnClickListeners
+     * of the cards to start a new DetailsScreen activity when they are clicked. It passes the pokemon
+     * object as an intent when starting this activity.
+     */
     private fun setTextImageAndOnClick(
         textview: TextView?,
         imageView: ImageView?,
@@ -224,8 +229,7 @@ class MainActivity : AppCompatActivity() {
             .with(this)
             .load(pokemon.sprites.image)
             .into(imageView)
-        // Set the onClickListener for the card by creating an intent to start the details screen activity
-        // and pass the pokemon object as a parameter
+        // Set the onClickListener
         materialCardView?.setOnClickListener{
             val intent = Intent(this, DetailsScreen::class.java)
             intent.putExtra("pokemon", pokemon)
@@ -240,8 +244,8 @@ class MainActivity : AppCompatActivity() {
     private fun showProgressDialog() {
         progressDialog = Dialog(this)
 
-        /*Set the screen content from a layout resource.
-    The resource will be inflated, adding all top-level views to the screen.*/
+        /*Set the screen content from the layout resource.
+        The resource will be inflated, adding all top-level views to the screen.*/
         progressDialog!!.setContentView(R.layout.dialog_custom_progress)
 
         //Start the dialog and display it on screen.

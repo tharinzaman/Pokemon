@@ -26,15 +26,15 @@ object Constants {
             val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
             return when {
-                // If they are using wifi, celluar or ethernet, return true, as they are connected to the internet:
+                // If they are using wifi, cellular or ethernet, return true
                 activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
                 activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                // Otherwise if they are not connected, return false:
+                // Otherwise if they are not connected, return false
                 else -> false
             }
         }
-        // Else if the build version is older:
+        // Else if the build version is older
         else {
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo != null && networkInfo.isConnectedOrConnecting

@@ -40,6 +40,7 @@ class DetailsScreen : AppCompatActivity() {
         this.finish()
     }
 
+    // Destroy the view binding to avoid data leaks
     override fun onDestroy() {
         super.onDestroy()
         binding = null
