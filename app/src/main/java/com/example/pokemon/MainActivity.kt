@@ -2,6 +2,7 @@ package com.example.pokemon
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import com.example.pokemon.InitialFile.InitialFileService
 import com.example.pokemon.StatsFiles.PokemonModel
 import com.example.pokemon.StatsFiles.StatsFileService
 import com.example.pokemon.databinding.ActivityMainBinding
+import com.google.android.material.card.MaterialCardView
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -176,7 +178,6 @@ class MainActivity : AppCompatActivity() {
         hideProgressDialog()
     }
 
-
     /**
      * This method will set up the material card views in the Main Activities UI which consists of a
      * scroll view with 20 material cards views, each containing the sprite and name of distinct pokemons.
@@ -184,41 +185,49 @@ class MainActivity : AppCompatActivity() {
     private fun setupCard(position: Int, pokemon: PokemonModel) {
 
         when (position) {
-            1 -> { setTextImageAndOnClick(binding?.tv1, binding?.iv1, pokemon) }
-            2 -> { setTextImageAndOnClick(binding?.tv2, binding?.iv2, pokemon) }
-            3 -> { setTextImageAndOnClick(binding?.tv3, binding?.iv3, pokemon) }
-            4 -> { setTextImageAndOnClick(binding?.tv4, binding?.iv4, pokemon) }
-            5 -> { setTextImageAndOnClick(binding?.tv5, binding?.iv5, pokemon) }
-            6 -> { setTextImageAndOnClick(binding?.tv6, binding?.iv6, pokemon) }
-            7 -> { setTextImageAndOnClick(binding?.tv7, binding?.iv7, pokemon) }
-            8 -> { setTextImageAndOnClick(binding?.tv8, binding?.iv8, pokemon) }
-            9 -> { setTextImageAndOnClick(binding?.tv9, binding?.iv9, pokemon) }
-            10 -> { setTextImageAndOnClick(binding?.tv10, binding?.iv10, pokemon) }
-            11 -> { setTextImageAndOnClick(binding?.tv11, binding?.iv11, pokemon) }
-            12 -> { setTextImageAndOnClick(binding?.tv12, binding?.iv12, pokemon) }
-            13 -> { setTextImageAndOnClick(binding?.tv13, binding?.iv13, pokemon) }
-            14 -> { setTextImageAndOnClick(binding?.tv14, binding?.iv14, pokemon) }
-            15 -> { setTextImageAndOnClick(binding?.tv15, binding?.iv15, pokemon) }
-            16 -> { setTextImageAndOnClick(binding?.tv16, binding?.iv16, pokemon) }
-            17 -> { setTextImageAndOnClick(binding?.tv17, binding?.iv17, pokemon) }
-            18 -> { setTextImageAndOnClick(binding?.tv18, binding?.iv18, pokemon) }
-            19 -> { setTextImageAndOnClick(binding?.tv19, binding?.iv19, pokemon) }
-            20 -> { setTextImageAndOnClick(binding?.tv20, binding?.iv20, pokemon) }
+            1 -> { setTextImageAndOnClick(binding?.tv1, binding?.iv1, binding?.card1, pokemon) }
+            2 -> { setTextImageAndOnClick(binding?.tv2, binding?.iv2, binding?.card2, pokemon) }
+            3 -> { setTextImageAndOnClick(binding?.tv3, binding?.iv3, binding?.card3, pokemon) }
+            4 -> { setTextImageAndOnClick(binding?.tv4, binding?.iv4, binding?.card4, pokemon) }
+            5 -> { setTextImageAndOnClick(binding?.tv5, binding?.iv5, binding?.card5, pokemon) }
+            6 -> { setTextImageAndOnClick(binding?.tv6, binding?.iv6, binding?.card6, pokemon) }
+            7 -> { setTextImageAndOnClick(binding?.tv7, binding?.iv7, binding?.card7, pokemon) }
+            8 -> { setTextImageAndOnClick(binding?.tv8, binding?.iv8, binding?.card8, pokemon) }
+            9 -> { setTextImageAndOnClick(binding?.tv9, binding?.iv9, binding?.card9, pokemon) }
+            10 -> { setTextImageAndOnClick(binding?.tv10, binding?.iv10, binding?.card10, pokemon) }
+            11 -> { setTextImageAndOnClick(binding?.tv11, binding?.iv11, binding?.card11, pokemon) }
+            12 -> { setTextImageAndOnClick(binding?.tv12, binding?.iv12, binding?.card12, pokemon) }
+            13 -> { setTextImageAndOnClick(binding?.tv13, binding?.iv13, binding?.card13, pokemon) }
+            14 -> { setTextImageAndOnClick(binding?.tv14, binding?.iv14, binding?.card14, pokemon) }
+            15 -> { setTextImageAndOnClick(binding?.tv15, binding?.iv15, binding?.card15, pokemon) }
+            16 -> { setTextImageAndOnClick(binding?.tv16, binding?.iv16, binding?.card16, pokemon) }
+            17 -> { setTextImageAndOnClick(binding?.tv17, binding?.iv17, binding?.card17, pokemon) }
+            18 -> { setTextImageAndOnClick(binding?.tv18, binding?.iv18, binding?.card18, pokemon) }
+            19 -> { setTextImageAndOnClick(binding?.tv19, binding?.iv19, binding?.card19, pokemon) }
+            20 -> { setTextImageAndOnClick(binding?.tv20, binding?.iv20, binding?.card20, pokemon) }
             else -> {
                 Log.i("Failed", "Could not set up UI")
             }
         }
     }
 
-
     private fun setTextImageAndOnClick(
-        textview: TextView?, imageView: ImageView?, pokemon: PokemonModel
-    ) {
+        textview: TextView?,
+        imageView: ImageView?,
+        materialCardView: MaterialCardView?,
+        pokemon: PokemonModel) {
+
+        // Set the TextView
         textview?.text = pokemon.name.capitalize()
+        // Set the ImageView
         Picasso
             .with(this)
             .load(pokemon.sprites.image)
             .into(imageView)
+        // Set the onClickListener for the card
+        materialCardView?.setOnClickListener{
+            startActivity(Intent(this, DetailsScreen::class.java))
+        }
     }
 
     /**
