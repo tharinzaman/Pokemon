@@ -224,9 +224,12 @@ class MainActivity : AppCompatActivity() {
             .with(this)
             .load(pokemon.sprites.image)
             .into(imageView)
-        // Set the onClickListener for the card
+        // Set the onClickListener for the card by creating an intent to start the details screen activity
+        // and pass the pokemon object as a parameter
         materialCardView?.setOnClickListener{
-            startActivity(Intent(this, DetailsScreen::class.java))
+            val intent = Intent(this, DetailsScreen::class.java)
+            intent.putExtra("pokemon", pokemon)
+            startActivity(intent)
         }
     }
 
@@ -253,6 +256,12 @@ class MainActivity : AppCompatActivity() {
         if (progressDialog != null) {
             progressDialog!!.dismiss()
         }
+    }
+
+    // Destroy binding to avoid data leaks
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
 

@@ -4,6 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsScreen">
+    tools:context=".DetailsScreen"
+    android:background="@color/bgBlue">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvDetails"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="400dp"
+        android:layout_height="250dp"
+        android:elevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/ivDetailScreenImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/tester"/>
+
+            <LinearLayout
+                android:id="@+id/llStats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Name: "
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvHeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Height:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Weight:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvStat1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Stat 1: "
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvStat2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Stat 2:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvStat3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Stat 3:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvStat4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Stat 4:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+                <TextView
+                    android:id="@+id/tvStat5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Stat 5: "
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

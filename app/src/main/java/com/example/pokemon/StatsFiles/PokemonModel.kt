@@ -9,7 +9,6 @@ data class PokemonModel(
     val name: String,
     val height: Int,
     val weight: Int,
-    val id: Int,
     val sprites: Sprites,
     val stats: List<Stat>
 ) : Serializable
